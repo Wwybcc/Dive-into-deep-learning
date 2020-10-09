@@ -1,0 +1,13 @@
+一、softmax函数：
+    将输出值变为值为正且和为1的概率分布
+二、Softmax和交叉熵损失函数(torch.nn.CrossEntropyLoss())     -》》》常用于分类问题
+     最小化交叉熵损失函数等价于最大化训练数据集所有标签类别的联合预测概率（会除以batch）
+三、d2l.FlattenLayer():
+    将样本x的形状转换成 （batch_size, -1)
+四、定义和初始化模型
+    net = nn.Sequential(d2l.FlattenLayer(), nn.Linear(num_inputs, num_outputs)
+    nn.init.normal_(net.linear.weight, mean=0, std=0.01)
+    nn.init.constant(net.linear.bias, val=0)
+
+   
+     
