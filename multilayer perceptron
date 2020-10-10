@@ -1,0 +1,9 @@
+一、激活函数：（非线性变换函数）
+   对隐藏曾变量使用按元素运算的非线性变换进行变换，然后再作为下一个全连接层的输入。
+   几个常见的激活函数：
+   1、ReLU（）：   -》》torch.nn.ReLU()
+      ReLU（rectified linear unit):函数提供了一个简单的非线性变换，ReLU（x）:max(x,0)
+   2、sigmoid（）：  --》》torch.nn.sigmoid()
+      sigmoid(x) = 1/(1+exp(-x))
+      
+   
