@@ -1,0 +1,44 @@
+一、训练误差（training error）和泛化误差(generalization error)
+    训练误差指模型在训练数据集上表现出的误差后者指模型在任意一个测试数据样本上表现出的误差的期望，并常常通过测试数据集上的
+误差来近似。
+    机器学习应该关注降低泛化误差
+二、模型选择
+    1、验证数据集：（validation set）
+       在所有数据里面预留一部分在训练数据集和测试数据集以外的数据用于进行模型选择如调参，这部分数据被称为验证数据集。
+    2、K折交叉验证（K-fold cross-validation)
+       将原始数据集分割成K个不重合的子数据集，然后做K次模型训练和验证。每一次，使用一个子数据集验证模型，
+    并使用其他K-1个子数据集来训练模型。在这K次训练和验证中，每次用来验证模型的子数据集都不同。最后，对K次
+    训练误差和验证误差求平均。
+       Code：
+def get_k_fold_data(k, i, X, y):
+    #返回第i折交叉验证时所需要的训练和验证数据
+    assert k > 1
+    fold_size = X.shape[0] // k
+    X_train,y_train = None, None
+    for j in range(k):
+        idx = slice(j * fold_size, (j + 1) * fold_size)
+        X_part, y_part = X[idx, :]y[idx]
+        if j == i:
+            X_valid, y_valid = X_part, y_part
+        elif X_train is None:
+                X_train, y_train =  X_part, y_part
+        else:
+                X_train = torch.cat((X_train, X_part), dim=0)
+                y_train = torch.cat((y_train, t_part), dim=0)
+    return X_train, y_train, X_valid, y_valid
+三、欠拟合和过拟合
+    欠拟合（underfitting）：无法得到较低的训练误差
+    过拟合（overfitting）：模型的训练误差远远小于泛化误差
+四、应对过拟合的常用方法：权重衰减（weight decay）
+    1、权重衰减：（使模型尽可能简单，减小过拟合）等价于L2范数正则化（regularization），L2范数正则化在模型原损失函数基础上添加L2范数惩罚项
+l2_penalty，从而得到训练所需要最小化的函数。L2范数惩罚项指模型权重参数每个元素的平方和与一个正常数的乘积。
+    2、倒置丢弃法：隐藏层的输入有p的概率被丢弃（随机），从而可以让模型参数不过度依赖于隐藏层中的任意一个，从而
+起到正则化的作用。
+五、模型参数初始化
+    随机初始化模型参数：
+    1、使用pytorch的默认随机初始化
+       torch.nn.init.normal_(),torch.nn.init.constant_()
+    2、Xavier随机初始化
+       假设某全连接层的输入个数为a，输出个数为b，Xavier随机初始化将使该层中权重参数的每个元素都随机采样于
+    均匀分布： U（-sqrt（6/（a+b）,sqrt(6/(a+b))）
+    
