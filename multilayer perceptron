@@ -5,5 +5,29 @@
       ReLU（rectified linear unit):函数提供了一个简单的非线性变换，ReLU（x）:max(x,0)
    2、sigmoid（）：  --》》torch.nn.sigmoid()
       sigmoid(x) = 1/(1+exp(-x))
-      
+   3、tanh（）：     --》》torch.nn.tanh()
+      tanh(x):  = (1-exp(-2x))/(1+e(-2x))
+二、多层感知机：
+    多层感知机就是含有至少一个隐藏层的由全连接层组成的神经网络， 且每个隐藏层的输出通过激活函数
+进行变换。
+
+
+Code：
+import torch
+import d2lzh_pytorch as d2l
+from torch import nn
+from torch.nn import init
+
+num_inputs,num_hiddens,num_outputs = 784, 256, 10
+net = nn.Sequential(d2l.FlattenLayer(),nn.Linear(num_inputs, num_hiddens),nn.ReLU(),nn.Linear(num_hiddens, num_outputs))
+for param in net.parameters():
+    init.normal_(param, mean=0, std=0.01)
+batch_size = 256
+train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size)
+loss = torch.nn.CrossEntropyLoss()
+optimizer =  torch.optim.SGD(net.parameters(), lr=0.5)
+
+num_epochs = 5
+d2l.train_ch3(net, train_iter, test_iter, loss, num_epochs, batch_size, None, None, optimizer)
+
    
