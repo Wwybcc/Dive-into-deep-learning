@@ -5,7 +5,7 @@ Knowledge points:
 二、优化算法
     1、解析解：例如线性回归，loss可以用公式表达出来；
     2、数值解：例如softmax回归，loss不能直接用公式表示出来，只能通过对初始的参数进行不断迭代来减小loss
-       a.SGD算法：（mini-batch stochastic gradient descent）：先选取一组模型参数的初始值，如随机选取。然后通过数次的迭代使该模型参数的loss不断减小。在每次迭代中，在samples中随机均匀选取batch个特征，计算batch的mean（），再求mean（）关于模型参数的grad，
+       a.SGD算法：（mini-batch stochastic gradient descent）：小批量随机梯度下降法：先选取一组模型参数的初始值，如随机选取。然后通过数次的迭代使该模型参数的loss不断减小。在每次迭代中，在samples中随机均匀选取batch个特征，计算batch_loss的mean（），再求mean（）关于模型参数的grad，
     并且用得到的grad乘以超参数学习率（learning—rate>0）来作为此次迭代模型参数的减小量。
     w1 <- w1 - grad * lr
     ...
