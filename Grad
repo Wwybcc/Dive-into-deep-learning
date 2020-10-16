@@ -1,0 +1,3 @@
+梯度清零操作
+    x.grad.data.zero_()
+    x.grad.data.fill_(0)
