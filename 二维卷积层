@@ -7,7 +7,7 @@
     import torch
     from torch import nn
 
-   def corr2d(X, K):
+    def corr2d(X, K):
        h, w = K.shape
        Y = torch.zeros((X.shape[0] - h + 1,X.shape[1] - w + 1))
        for i in range(Y.shape[0]):
@@ -69,6 +69,19 @@ for i in range(step):
         print('Step %d, loss %.3f' % (i + 1, l.item()))
 print("weight: ", conv2d.weight.data)
 print("bias: ", conv2d.bias.data)
-    
+
+5.1.4 互相关运算和卷积运算
+      卷积运算：将kernel数组（核数组）左右翻转并上下翻转，再与输入数组做互相关运算。一般在深度学习中，卷积运算相当于互相关运算。
+5.1.5 特征图和感受野
+      特征图（feature map）：二维卷积输出的二维数组被称为特征图，可以看作是输入在空间维度（宽和高）上某一级的表征。
+      感受野（receptive field）:影响元素x的前向计算的所有可能输入区域（可能大于输入的实际尺寸）
+      
+ 
+5.2填补与步幅
+   填充和步幅为卷积层的两个超参数，它们可以对给定形状的输入和卷积核改变输出形状。
+5.2.1 填充（padding）
+      填充（padding）是指在输入高和宽的两侧填充元素（通常是0元素）。在很多情况下，我们通常会设置ph=Kh - 1和pw = Kw - 1来使输入和输出具有相同的形状。
+卷积神经网络通常使用奇数高宽的卷积核， 如1、3、5和7，所以两端上的填充个数相等。
+
     
 
