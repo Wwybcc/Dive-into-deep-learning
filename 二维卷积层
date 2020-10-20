@@ -96,5 +96,31 @@ comp_conv2d(conv2d, X).shape
       一般来说，当高上步幅为sh，宽上步幅为sw时，输出形状为：
       (（nh-kh+ph+sh)/sh,(nw-kw+pw+sw)/sw)
       如果设置ph=kh-1和pw=kw-1，那么输出形状将简化为((nh+sh-1)/sh,(nw+sw-1)/sw)，进一步可以将输出形状转变为(nh/sh, nw/sw)
+
+5.3 多输入通道和多输出通道
+    一个图像的形状是（C,H,W):其中的C就是指channel：通道；H：weight；W：width
+5.3.1 多输入通道
+      含有多个通道的输入数据与多输入通道的卷积核的二维互相关运算：
+      当输入数据含有多个通道时，比如当输入数据的通道数为ci时，那么我们需要构造卷积核的通道同样为ci，那么当ci大于
+1时，我们将为每个输入通道各分配一个形状为kh*kw的核数组。将这ci个数组在输入通道维上连结，即得到一个形状为ci*kh*kw的卷积核。由于
+输入和卷积核各有ci个通道，我们可以在各个通道上对输入的二维数组和卷积核的二维核数组做互相关运算，再将这ci个互相关运算的二维输出
+按通道相加，得到一个二维数组。（无论输入的tensor的通道数为多少，经过pooling layer后输出的都是二维数组）
+      code：
+import torch
+from torch import nn
+import d2lzh_pytorch as d2l
+
+def corr2d_multi_in(X, K):
+    #沿着X和K的第0维（通道维）分别计算并相加
+    res =  d2l.corr2d(X[0, :, :], K[0, :, :])
+    for i in range(1, X.shape[0]):
+        res += d2l.corr2d(X[i, :, :], K[i, :, :])
+    return res
+X = torch.tensor([[[0, 1, 2],[3, 4, 5], [6, 7, 8]],[[1, 2, 3], [4, 5, 6],[7, 8, 9]]])
+K = torch.tensor([[[0, 1],[2, 3]],[[1, 2], [3, 4]]])
+corr2d_multi_in(X, K)
+
+5.3.2多输出通道
+5.3.3 1 * 1卷积层
       
 
